@@ -1,10 +1,10 @@
-use std::{
-    collections::HashMap,
-    hash::BuildHasherDefault,
-    io::{self, Write},
-};
+use std::io::{self, Write};
 
-use fnv::FnvHasher;
+mod stack;
+mod table;
+
+use self::stack::Stack;
+use self::table::Table;
 use infix_to_rpn::{InfixExpression, RpnExpression};
 
 pub struct Calc {
@@ -21,7 +21,7 @@ impl Calc {
         let code = read_stdin();
         let tokens = get_rpn(&code);
         let result = self.calc(tokens);
-        println!("{result}");
+        println!("\x1b[1m{result}\x1b[0m");
     }
     fn calc(&mut self, rpn: RpnExpression) -> i32 {
         //計算スタックを作成
@@ -72,11 +72,10 @@ impl Calc {
             }
         }
         //最後にスタックに残った値を取り出す なければ0
-		match stack.pop() {
-			Operand::Int(i) => i,
-			Operand::Exp(name) => self.table.get(name)
-		}
-
+        match stack.pop() {
+            Operand::Int(i) => i,
+            Operand::Exp(name) => self.table.get(name),
+        }
     }
     //オペランドを評価してi32として返す
     fn eval(&self, operand: Operand) -> i32 {
@@ -84,47 +83,6 @@ impl Calc {
             Operand::Int(i) => i,
             Operand::Exp(name) => self.table.get(name),
         }
-    }
-}
-
-//計算スタック
-struct Stack<'a>(Vec<Operand<'a>>);
-
-impl<'a> Stack<'a> {
-    //計算スタックを作成
-    fn new() -> Self {
-        Self(Vec::new())
-    }
-    //スタックにオペランドを追加
-    fn push(&mut self, operand: Operand<'a>) {
-        self.0.push(operand);
-    }
-    //スタックからオペランドを取り出す
-    fn pop(&mut self) -> Operand<'a> {
-        if let Some(operand) = self.0.pop() {
-			operand
-		} else {
-			Operand::Int(0)
-		}
-    }
-}
-
-//変数テーブル
-#[derive(Debug)]
-struct Table(HashMap<String, i32, BuildHasherDefault<FnvHasher>>);
-
-impl Table {
-    //変数テーブルを作成
-    fn new() -> Self {
-        Self(HashMap::default())
-    }
-    //変数に数字を代入
-    fn set(&mut self, name: &str, num: i32) {
-        self.0.insert(name.to_owned(), num);
-    }
-    //変数から数字を取得
-    fn get(&self, name: &str) -> i32 {
-        *self.0.get(name).unwrap()
     }
 }
 
