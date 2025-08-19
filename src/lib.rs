@@ -13,7 +13,7 @@
 //! 文字列はスペースが間に複数入っていても問題ありません。
 //! ```
 //! let infix = "-1 / (1+2) + -3^3"
-//! let code: Result<RpnExpression, _> = InfixExpression::from(infix).try_into();
+//! let code: Result<PostfixExpression, _> = InfixExpression::from(infix).try_into();
 //! ```
 //!
 //! ## 使用できるオペレーターとその優先度
@@ -22,10 +22,10 @@
 //! です。
 
 mod infix;
-mod rpn;
+mod postfix;
 
 pub use infix::InfixExpression;
-pub use rpn::RpnExpression;
+pub use postfix::PostfixExpression;
 
 /// 式に含まれるトークンです。
 /// 式(Exp)にこれらのトークンに使われる文字を含まないでください。

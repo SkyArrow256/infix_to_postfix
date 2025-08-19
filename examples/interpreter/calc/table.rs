@@ -1,7 +1,6 @@
 use fnv::FnvHasher;
 use std::{collections::HashMap, hash::BuildHasherDefault};
 //変数テーブル
-#[derive(Debug)]
 pub struct Table(HashMap<String, i32, BuildHasherDefault<FnvHasher>>);
 
 impl Table {

@@ -1,9 +1,0 @@
-(function() {
-    var implementors = Object.fromEntries([["infix_to_rpn",[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.85.1/core/marker/trait.Sync.html\" title=\"trait core::marker::Sync\">Sync</a> for <a class=\"enum\" href=\"infix_to_rpn/enum.ParseError.html\" title=\"enum infix_to_rpn::ParseError\">ParseError</a>",1,["infix_to_rpn::ParseError"]],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.85.1/core/marker/trait.Sync.html\" title=\"trait core::marker::Sync\">Sync</a> for <a class=\"enum\" href=\"infix_to_rpn/enum.Token.html\" title=\"enum infix_to_rpn::Token\">Token</a>",1,["infix_to_rpn::Token"]],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.85.1/core/marker/trait.Sync.html\" title=\"trait core::marker::Sync\">Sync</a> for <a class=\"struct\" href=\"infix_to_rpn/struct.InfixExpression.html\" title=\"struct infix_to_rpn::InfixExpression\">InfixExpression</a>",1,["infix_to_rpn::InfixExpression"]],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.85.1/core/marker/trait.Sync.html\" title=\"trait core::marker::Sync\">Sync</a> for <a class=\"struct\" href=\"infix_to_rpn/struct.RpnExpression.html\" title=\"struct infix_to_rpn::RpnExpression\">RpnExpression</a>",1,["infix_to_rpn::RpnExpression"]]]]]);
-    if (window.register_implementors) {
-        window.register_implementors(implementors);
-    } else {
-        window.pending_implementors = implementors;
-    }
-})()
-//{"start":57,"fragment_lengths":[1214]}

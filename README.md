@@ -8,7 +8,8 @@ C言語のライブラリを扱える言語、例えばHSPやC#でも動作す�
 ## ドキュメント
 
 仕様などについてはこちらに詳細があります！
-<https://skyarrow256.github.io/infix_to_rpn/infix_to_rpn/>
+~~<https://skyarrow256.github.io/infix_to_rpn/infix_to_rpn/>~~
+一時的に削除しています！読みたい方は``cargo doc``をお願いします🙏
 
 ## example
 

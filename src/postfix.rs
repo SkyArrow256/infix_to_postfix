@@ -2,16 +2,16 @@ use crate::infix::InfixExpression;
 use crate::{ParseError, Token};
 
 /// 逆ポーランド記法で表現された式です。
-pub struct RpnExpression(Vec<Token>);
+pub struct PostfixExpression(Vec<Token>);
 
-impl RpnExpression {
+impl PostfixExpression {
     /// Tokensへの参照を取得します。
     pub fn tokens(&self) -> &[Token] {
         &self.0
     }
 }
 
-impl TryFrom<InfixExpression> for RpnExpression {
+impl TryFrom<InfixExpression> for PostfixExpression {
     type Error = ParseError;
 
     fn try_from(infix: InfixExpression) -> Result<Self, Self::Error> {
