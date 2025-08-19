@@ -58,7 +58,7 @@ impl From<&str> for InfixExpression {
                     '/' => tokens.push(Div),
                     '%' => tokens.push(Mod),
                     '^' => tokens.push(Pow),
-                    ':' => tokens.push(Assign),
+                    '=' => tokens.push(Assign),
                     _ => {
                         //文字がそれ以外、つまり式のとき、tokensの最後が式だったならそれに文字を加える
                         if let Some(last) = tokens.last_mut() {
