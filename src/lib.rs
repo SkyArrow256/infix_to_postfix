@@ -14,11 +14,11 @@
 
 mod tokens;
 mod primitive;
-mod infix2;
-mod postfix2;
+mod infix;
+mod postfix;
 
-pub use infix2::InfixExpression;
-pub use postfix2::PostfixExpression;
+pub use infix::InfixExpression;
+pub use postfix::PostfixExpression;
 
 /// このライブラリで起こりうるエラーです。
 #[derive(Debug)]

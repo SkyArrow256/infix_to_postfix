@@ -1,92 +1,52 @@
 use crate::infix::InfixExpression;
-use crate::{ParseError, Token};
+use crate::tokens::{Assoc, Operator, Token};
+use crate::{Expression, ParseError};
 
-/// 逆ポーランド記法で表現された式です。
+#[derive(Debug)]
 pub struct PostfixExpression(Vec<Token>);
 
-impl PostfixExpression {
-    /// Tokensへの参照を取得します。
-    pub fn tokens(&self) -> &[Token] {
-        &self.0
-    }
+impl Expression for PostfixExpression {
+	fn as_tokens(&self) -> &[crate::tokens::Token] {
+		&self.0
+	}
 }
 
 impl TryFrom<InfixExpression> for PostfixExpression {
-    type Error = ParseError;
-
-    fn try_from(infix: InfixExpression) -> Result<Self, Self::Error> {
-        use Token::*;
-        let mut que = Vec::new();
-        let mut stack = Vec::new();
-        for token in infix.tokens() {
-            match token {
-                Assign => {
-                    //右結合なので、Assign以外の全てをpopする
-                    while let Some(last) = stack.last() {
-                        if *last == Assign {
-                            break;
-                        }
-                        que.push(stack.pop().unwrap());
-                    }
-                    stack.push(Assign);
-                }
-                //左括弧はstackに
-                ParenLeft => stack.push(ParenLeft),
-                ParenRight => {
-                    //閉じ括弧が現れるstackのtokenをqueに追加
-                    while *stack.last().ok_or(ParseError::ParenthesesMismatch)? != ParenLeft {
-                        que.push(stack.pop().unwrap());
-                    }
-                    //閉じ括弧は不要なのでstackから捨てる
-                    stack.pop();
-                }
-                c @ Add | c @ Sub => {
-                    //stackの最後が空または括弧または自分未満の優先順位を持つ演算子になるまでpopしてqueに追加
-                    while let Some(last) = stack.last() {
-                        if *last == ParenLeft || *last == Assign {
-                            break;
-                        }
-                        que.push(stack.pop().unwrap());
-                    }
-                    stack.push(c.clone());
-                }
-                c @ Mul | c @ Div | c @ Mod => {
-                    //stackの最後が空または括弧または自分未満の優先順位を持つ演算子になるまでpopしてqueに追加
-                    while let Some(last) = stack.last() {
-                        if *last == ParenLeft || *last == Assign || *last == Add || *last == Sub {
-                            break;
-                        }
-                        que.push(stack.pop().unwrap());
-                    }
-                    stack.push(c.clone());
-                }
-                UnarySub => {
-                    //stackの最後が空または括弧または(右結合なので)自分**以下**の優先順位を持つ演算子になるまでpopしてqueに追加
-                    //これは冪乗以外の全て
-                    while let Some(last) = stack.last() {
-                        if *last != Pow {
-                            break;
-                        }
-                        que.push(stack.pop().unwrap());
-                    }
-                    stack.push(UnarySub);
-                }
-                //冪乗は最も優先順位が高いのでいつでもstackに追加
-                Pow => stack.push(Pow),
-                //その他の場合、式なのでqueにそのまま追加
-                exp @ _ => que.push(exp.clone()),
-            }
-        }
-
-        //stackに括弧が残っているなら括弧の数が間違っている
-        //数があっていたらstackの中のトークンを最後から取り出してqueに入れて終了
-        if stack.contains(&ParenLeft) {
-            Err(ParseError::ParenthesesMismatch)
-        } else {
-            for token in stack.into_iter().rev() {
-                que.push(token);
-            }
-            Ok(Self(que))
-        }
-    }
+	type Error = ParseError;
+	fn try_from(value: InfixExpression) -> Result<Self, Self::Error> {
+		let mut que = Vec::new();
+		let mut stack: Vec<&Operator> = Vec::new();
+		for token in value.as_tokens() {
+			match token {
+				//オペランドはそのままキューに入れる
+				Token::Item(_) => que.push(token.clone()),
+				//オペレータは優先度に合わせて分岐
+				Token::Symbol(operator) => {
+					if operator == &Operator::LeftParen {
+					} else if operator == &Operator::RightParen {
+						while let Some(token) = stack.pop() {
+							//対応する括弧が見つかったら スタックから捨てて処理を終える
+							if token == &Operator::LeftParen { stack.pop(); break; }
+							que.push(Token::Symbol(token.clone()));
+						}
+						continue;
+					} else if operator.assoc() == Assoc::Left {
+						while !stack.is_empty() && stack.last().unwrap().prec() >= operator.prec() {
+							que.push(Token::Symbol(stack.pop().unwrap().clone()));
+						}
+					} else {
+						while !stack.is_empty() && stack.last().unwrap().prec() > operator.prec() {
+							que.push(Token::Symbol(stack.pop().unwrap().clone()));
+						}
+					}
+					stack.push(operator);
+				}
+			}
+		}
+		for token in stack.into_iter().rev() {
+			que.push(Token::Symbol(token.clone()));
+		}
+		Ok(Self(que))
+        
+	}
 }
