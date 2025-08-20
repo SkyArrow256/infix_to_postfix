@@ -1,0 +1,11 @@
+mod int;
+mod bool;
+
+pub use self::int::Int;
+pub use self::bool::Bool;
+
+pub trait Type {
+	type T;
+	fn new(item: Self::T) -> Self;
+	fn eval(&self) -> Self::T;
+}

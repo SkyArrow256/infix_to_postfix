@@ -9,53 +9,16 @@
 //! <https://ja.wikipedia.org/wiki/操車場アルゴリズム>
 //!
 //! ## 使い方
-//! &strから中置記法の式をfrom()メソッドでトークナイズしたあと、try_fromで逆ポーランド記法に変換します。
+//! &strから中置記法の式をfrom()メソッドでトークナイズしたあと、try_intoで逆ポーランド記法に変換します。
 //! 文字列はスペースが間に複数入っていても問題ありません。
-//! ```
-//! let infix = "-1 / (1+2) + -3^3"
-//! let code: Result<PostfixExpression, _> = InfixExpression::from(infix).try_into();
-//! ```
-//!
-//! ## 使用できるオペレーターとその優先度
-//! 高い順に
-//! ``` ^, -(単項), * / %, + -(二項), =(代入) ```
-//! です。
 
-mod infix;
-mod postfix;
+mod tokens;
+mod types;
+mod infix2;
+mod postfix2;
 
-pub use infix::InfixExpression;
-pub use postfix::PostfixExpression;
-
-/// 式に含まれるトークンです。
-/// 式(Exp)にこれらのトークンに使われる文字を含まないでください。
-#[derive(Debug, Clone, PartialEq)]
-pub enum Token {
-    /// 左括弧 (
-    ParenLeft,
-    /// 右括弧 )
-    ParenRight,
-    /// 整数型
-    Int(i32),
-    /// 式(変数名、関数名)
-    Exp(String),
-    /// 代入 :
-    Assign,
-    /// 加算 +
-    Add,
-    /// 減算 -
-    Sub,
-    /// 乗算 *
-    Mul,
-    /// 除算 /
-    Div,
-    /// 余剰 %
-    Mod,
-    /// 単項マイナス -
-    UnarySub,
-    /// 冪乗 ^
-    Pow,
-}
+pub use infix2::InfixExpression;
+pub use postfix2::PostfixExpression;
 
 /// このライブラリで起こりうるエラーです。
 #[derive(Debug)]
@@ -64,4 +27,8 @@ pub enum ParseError {
     ParenthesesMismatch,
     /// 数値のパースに失敗
     InvalidNumber,
+}
+
+trait Expression {
+    fn as_tokens(&self) -> &[tokens::Token];
 }

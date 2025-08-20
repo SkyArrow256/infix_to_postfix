@@ -1,4 +1,4 @@
-# infix-to-rpn
+# infix-to-postfix
  
 **現在多くの機能が未実装です！**
 
@@ -9,7 +9,7 @@ C言語のライブラリを扱える言語、例えばHSPやC#でも動作す�
 
 仕様などについてはこちらに詳細があります！
 ~~<https://skyarrow256.github.io/infix_to_rpn/infix_to_rpn/>~~
-一時的に削除しています！読みたい方は``cargo doc``をお願いします🙏
+一時的に削除しています！読みたい方は``cargo doc``コマンドをお願いします🙏
 
 ## example
 

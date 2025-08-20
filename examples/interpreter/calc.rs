@@ -5,7 +5,7 @@ mod table;
 
 use self::stack::Stack;
 use self::table::Table;
-use infix_to_rpn::{InfixExpression, PostfixExpression};
+use infix_to_postfix::{InfixExpression, PostfixExpression};
 
 pub struct Calc {
     table: Table,
@@ -26,7 +26,7 @@ impl Calc {
     fn calc(&mut self, rpn: PostfixExpression) -> i32 {
         //計算スタックを作成
         let mut stack = Stack::new();
-        use infix_to_rpn::Token::*;
+        use infix_to_postfix::Token::*;
         for token in rpn.tokens() {
             match token {
                 Int(i) => stack.push(Operand::Int(*i)),
