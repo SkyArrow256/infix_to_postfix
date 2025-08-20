@@ -1,4 +1,4 @@
-use crate::types::{Int, Bool};
+use crate::primitive::{Int, Bool};
 
 /// トークン
 #[derive(Debug, Clone, PartialEq)]

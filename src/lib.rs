@@ -13,7 +13,7 @@
 //! 文字列はスペースが間に複数入っていても問題ありません。
 
 mod tokens;
-mod types;
+mod primitive;
 mod infix2;
 mod postfix2;
 

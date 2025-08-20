@@ -11,4 +11,7 @@ impl Type for Int {
 	fn new(item: Self::T) -> Self {
 		Self(item)
 	}
+	fn get_mut(&mut self) -> &mut Self::T {
+		&mut self.0
+	}
 }

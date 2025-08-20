@@ -1,5 +1,5 @@
 use crate::tokens::{Operand, Operator, Token};
-use crate::{types::{self, Type}, Expression};
+use crate::{primitive::{self, Type}, Expression};
 
 #[derive(Debug)]
 pub struct InfixExpression(Vec<Token>);
@@ -84,7 +84,16 @@ impl From<&str> for InfixExpression {
 				'%' => tokens.push(Token::Symbol(Operator::Mod)),
 				'^' => tokens.push(Token::Symbol(Operator::Pow)), 
 				'!' => tokens.push(Token::Symbol(Operator::Not)),
-				c @ _ if c.is_ascii_digit() => tokens.push(Token::Item(Operand::Integar(types::Int::new(c.to_digit(10).unwrap() as i32)))),
+				c @ _ if c.is_ascii_digit() => {
+					//数値だったとき、10進数なので元の数に10かけてから足す
+					let num = c.to_digit(10).unwrap() as i32;
+					if let Some(Token::Item(Operand::Integar(i))) = tokens.last_mut() {
+						let i = i.get_mut();
+						*i *= 10; *i += num;
+					} else {
+						tokens.push(Token::Item(Operand::Integar(primitive::Int::new(num))));
+					}
+				}
 				_ => todo!("未実装の文字です"),
 			}
 			//&や|のカウンタは本当に手抜き工事なので要修正！

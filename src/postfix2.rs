@@ -1,6 +1,6 @@
 use crate::infix2::InfixExpression;
 use crate::tokens::{Assoc, Operator, Token};
-use crate::{types, Expression, ParseError};
+use crate::{Expression, ParseError};
 
 #[derive(Debug)]
 pub struct PostfixExpression(Vec<Token>);

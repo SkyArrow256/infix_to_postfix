@@ -8,7 +8,6 @@ fn main() {
 		let mut str = String::new();
 		io::stdin().read_line(&mut str).unwrap();
 		let infix = InfixExpression::from(str.as_str());
-		println!("{infix:?}");
 		let postfix: PostfixExpression = infix.try_into().unwrap();
 		println!("{postfix:?}");
 	}

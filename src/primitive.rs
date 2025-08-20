@@ -8,4 +8,5 @@ pub trait Type {
 	type T;
 	fn new(item: Self::T) -> Self;
 	fn eval(&self) -> Self::T;
+	fn get_mut(&mut self) -> &mut Self::T;
 }
