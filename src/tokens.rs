@@ -88,7 +88,7 @@ impl Operator {
 	/// 演算子の結合方向を取得
 	pub fn assoc(&self) -> Assoc {
 		match self {
-			Self::Assign | Self::Pow => Assoc::Right,
+			Self::Assign | Self::Pow | Self::Not => Assoc::Right,
 			_ => Assoc::Left,
 		}
 	}

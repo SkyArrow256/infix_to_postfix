@@ -9,9 +9,7 @@ fn main() {
 		print!("> "); io::stdout().flush().unwrap();
 		io::stdin().read_line(&mut input).unwrap();
 		let infix = InfixExpression::from(input.as_str());
-		println!("{infix:?}");
 		let postfix = PostfixExpression::try_from(infix).unwrap();
-		println!("{postfix:?}");
 		match calculator.run(&postfix) {
 			Ok(result) => match result {
 				Primitive::Integer(i) => println!("\x1b[1m{i}\x1b[0m"),
