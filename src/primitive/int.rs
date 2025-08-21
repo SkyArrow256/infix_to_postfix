@@ -1,8 +1,8 @@
-use std::ops::{Add, Div, Mul, Sub};
+use std::{fmt::Display, ops::{Add, Div, Mul, Rem, Sub}};
 
 use super::Type;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Int(i32);
 
 impl Type for Int {
@@ -43,5 +43,18 @@ impl Div for Int {
 	type Output = Int;
 	fn div(self, rhs: Self) -> Self::Output {
 		Int(self.0 / rhs.0)
+	}
+}
+
+impl Rem for Int {
+	type Output = Int;
+	fn rem(self, rhs: Self) -> Self::Output {
+		Int(self.0 % rhs.0)
+	}
+}
+
+impl Display for Int {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", self.0)
 	}
 }

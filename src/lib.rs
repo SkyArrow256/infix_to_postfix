@@ -21,6 +21,7 @@ mod calc;
 pub use infix::InfixExpression;
 pub use postfix::PostfixExpression;
 pub use calc::Calc;
+pub use primitive::Primitive;
 
 /// このライブラリで起こりうるエラーです。
 #[derive(Debug)]

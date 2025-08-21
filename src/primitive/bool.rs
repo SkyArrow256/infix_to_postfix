@@ -1,6 +1,8 @@
+use std::fmt::Display;
+
 use super::Type;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Bool(bool);
 
 impl Type for Bool {
@@ -13,5 +15,11 @@ impl Type for Bool {
 	}
 	fn get_mut(&mut self) -> &mut Self::T {
 		&mut self.0
+	}
+}
+
+impl Display for Bool {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", self.0)
 	}
 }

@@ -44,8 +44,6 @@ impl TryFrom<InfixExpression> for PostfixExpression {
 				}
 			}
 		}
-		println!("{que:?}");
-		println!("{stack:?}");
 		for token in stack.into_iter().rev() {
 			que.push(Token::Symbol(token.clone()));
 		}
