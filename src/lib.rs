@@ -16,9 +16,11 @@ mod tokens;
 mod primitive;
 mod infix;
 mod postfix;
+mod calc;
 
 pub use infix::InfixExpression;
 pub use postfix::PostfixExpression;
+pub use calc::Calc;
 
 /// このライブラリで起こりうるエラーです。
 #[derive(Debug)]
@@ -29,6 +31,7 @@ pub enum ParseError {
     InvalidNumber,
 }
 
-trait Expression {
+/// トークナライズされた式
+pub trait Expression {
     fn as_tokens(&self) -> &[tokens::Token];
 }

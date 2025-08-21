@@ -13,26 +13,13 @@ impl Expression for InfixExpression {
 impl From<&str> for InfixExpression {
 	fn from(string: &str) -> Self {
 		let mut tokens = Vec::new();
-		//OrとAndのためのカウンター（手抜き）
-		let mut logic_counter = (0, 0);
 		for c in string.chars().filter(|c| !c.is_whitespace()) {
 			match c {
+				//一文字でしかマッチできないので後で直す
 				'(' => tokens.push(Token::Symbol(Operator::LeftParen)),
 				')' => tokens.push(Token::Symbol(Operator::RightParen)),
-				'|' => {
-					logic_counter.0 += 1;
-					if logic_counter.0 == 2 {
-						tokens.push(Token::Symbol(Operator::Or));
-						logic_counter.0 = 0;
-					}
-				}
-				'&' => {
-					logic_counter.1 += 1;
-					if logic_counter.1 == 2 {
-						tokens.push(Token::Symbol(Operator::And));
-						logic_counter.1 = 0;
-					}
-				}
+				'|' => tokens.push(Token::Symbol(Operator::Or)),
+				'&' => tokens.push(Token::Symbol(Operator::And)),
 				'=' => {
 					if let Some(last) = tokens.last() && let Token::Symbol(op) = last {
 						match op {
@@ -84,19 +71,20 @@ impl From<&str> for InfixExpression {
 				'%' => tokens.push(Token::Symbol(Operator::Mod)),
 				'^' => tokens.push(Token::Symbol(Operator::Pow)), 
 				'!' => tokens.push(Token::Symbol(Operator::Not)),
+				't' => tokens.push(Token::Item(Operand::Boolean(primitive::Bool::new(true)))),
+				'f' => tokens.push(Token::Item(Operand::Boolean(primitive::Bool::new(false)))),
 				c @ _ if c.is_ascii_digit() => {
 					//数値だったとき、10進数なので元の数に10かけてから足す
 					let num = c.to_digit(10).unwrap() as i32;
-					if let Some(Token::Item(Operand::Integar(i))) = tokens.last_mut() {
+					if let Some(Token::Item(Operand::Integer(i))) = tokens.last_mut() {
 						let i = i.get_mut();
 						*i *= 10; *i += num;
 					} else {
-						tokens.push(Token::Item(Operand::Integar(primitive::Int::new(num))));
+						tokens.push(Token::Item(Operand::Integer(primitive::Int::new(num))));
 					}
 				}
-				_ => todo!("未実装の文字です"),
+				_ => todo!("実装されていないトークンです"),
 			}
-			//&や|のカウンタは本当に手抜き工事なので要修正！
 		}
 		Self(tokens)
 	}

@@ -11,7 +11,7 @@ pub enum Token {
 #[derive(Debug, Clone, PartialEq)]
 pub enum Operand {
 	/// 整数型
-    Integar(Int),
+    Integer(Int),
 	/*
 	/// 浮動小数点数型
 	Double(f64),

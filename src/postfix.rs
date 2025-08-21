@@ -26,7 +26,8 @@ impl TryFrom<InfixExpression> for PostfixExpression {
 					} else if operator == &Operator::RightParen {
 						while let Some(token) = stack.pop() {
 							//対応する括弧が見つかったら スタックから捨てて処理を終える
-							if token == &Operator::LeftParen { stack.pop(); break; }
+							if token == &Operator::LeftParen { break; }
+							//そうでなければキューに追加
 							que.push(Token::Symbol(token.clone()));
 						}
 						continue;
@@ -43,6 +44,8 @@ impl TryFrom<InfixExpression> for PostfixExpression {
 				}
 			}
 		}
+		println!("{que:?}");
+		println!("{stack:?}");
 		for token in stack.into_iter().rev() {
 			que.push(Token::Symbol(token.clone()));
 		}

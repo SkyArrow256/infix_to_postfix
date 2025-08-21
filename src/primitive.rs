@@ -10,3 +10,9 @@ pub trait Type {
 	fn eval(&self) -> Self::T;
 	fn get_mut(&mut self) -> &mut Self::T;
 }
+
+#[derive(Debug)]
+pub enum Primitive {
+	Integer(Int),
+	Boolean(Bool),
+}
